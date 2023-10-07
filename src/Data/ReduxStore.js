@@ -147,13 +147,13 @@ function CommentReducer(state = initial_state, action) {
 
                 // Inject modified reply into parent
                 originalComment.replies = originalComment.replies.map(reply => {
-                    if(reply.id !== id) return reply;
+                    if (reply.id !== id) return reply;
                     else return newReply
                 })
-                
+
                 // Inject modified parent into all comments
                 newComments = state.comments.map(comment => {
-                    if(comment.id !== originalComment.id) return comment;
+                    if (comment.id !== originalComment.id) return comment;
                     return originalComment
                 })
 
@@ -179,9 +179,11 @@ function CommentReducer(state = initial_state, action) {
         }
         case 'vote': {
             const { vote, id, isAReply } = action.payload;
+            const { vote: previousVote } = isAReply ? getReplyById(state.comments, id) : getCommentById(state.comments, id);
             let voteFunction;
             if (vote === 'up') voteFunction = (score) => score + 1;
             if (vote === 'down') voteFunction = (score) => score - 1;
+            if (vote === 'neutral') voteFunction = (score) => previousVote === 'up' ? score - 1 : score + 1;
             let newComments = [];
 
             if (isAReply) {
