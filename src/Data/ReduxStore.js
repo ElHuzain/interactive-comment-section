@@ -181,8 +181,8 @@ function CommentReducer(state = initial_state, action) {
             const { vote, id, isAReply } = action.payload;
             const { vote: previousVote } = isAReply ? getReplyById(state.comments, id) : getCommentById(state.comments, id);
             let voteFunction;
-            if (vote === 'up') voteFunction = (score) => score + 1;
-            if (vote === 'down') voteFunction = (score) => score - 1;
+            if (vote === 'up') voteFunction = (score) => previousVote === 'down' ? score + 2 : score + 1;
+            if (vote === 'down') voteFunction = (score) => previousVote === 'up' ? score - 2 : score - 1;
             if (vote === 'neutral') voteFunction = (score) => previousVote === 'up' ? score - 1 : score + 1;
             let newComments = [];
 
