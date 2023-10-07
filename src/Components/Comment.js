@@ -29,11 +29,13 @@ const Comment = (props) => {
         setEditing(false);
     }
     const handleVote = (vote) => {
-        if (props.data.vote) if (props.data.vote === vote) return;
+        const isAReply = !!replyingTo;
 
-        const isAReply = replyingTo ? true : false;
-        if (props.data.vote) if (props.data.vote !== vote) dispatch(makeAVote(vote, id, isAReply));
-        dispatch(makeAVote(vote, id, isAReply));
+        if (props.data.vote === vote) {
+            dispatch(makeAVote("neutral", id, isAReply));
+        } else {
+            dispatch(makeAVote(vote, id, isAReply));
+        }
     }
 
     function handleKeyDown(e) {
