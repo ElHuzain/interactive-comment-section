@@ -32,7 +32,7 @@ const Comment = (props) => {
         const isAReply = !!replyingTo;
 
         if (props.data.vote === vote) {
-            dispatch(makeAVote("neutral", id, false));
+            dispatch(makeAVote("neutral", id, isAReply));
         } else {
             dispatch(makeAVote(vote, id, isAReply));
         }
